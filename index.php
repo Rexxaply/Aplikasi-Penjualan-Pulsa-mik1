@@ -18,6 +18,8 @@ session_start();
     <link rel="stylesheet" href="asset/plugins/bootstrap-5.2.3/css/bootstrap.min.css">
     <!-- Fontawasome CSS -->
     <link rel="stylesheet" href="asset/plugins/fontawesome/css/all.min.css">
+    <!-- Selectize CSS -->
+    <link rel="stylesheet" href="asset/plugins/selectize.js/css/selectize.bootstrap5.css">
     <!-- Style CSS -->
     <style>
         * {
@@ -32,6 +34,8 @@ session_start();
     <script src="asset/plugins/fontawesome/js/all.min.js"></script>
     <!-- Jquery JS -->
     <script src="asset/js/jquery-3.7.0.min.js"></script>
+    <!-- Selectize JS -->
+    <script src="asset/plugins/selectize.js/js/selectize.min.js"></script>
     <!-- MyStyle CSS -->
     <link rel="stylesheet" href="asset/css/style.css">
     <!-- Title -->
@@ -45,8 +49,7 @@ include 'navigation.php';
 
     <main role="main" class="container">
         <?php include 'content.php'; ?>
-        <!-- Format Angka JS -->
-        <script src="asset/js/format-angka.js"></script>
+        
         <!-- Format Masking JS -->
         <script src="asset/js/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
         <!-- Format Angka JS -->
@@ -62,7 +65,7 @@ include 'navigation.php';
         <!-- Format DataTable Main Script JS -->
         <script>
             $(document).ready(function() {
-                // Format nomor HP.
+                // DataTable
                 let table = $('#dataTable').DataTable ( {
                     pageLength: 5,
                     lengthMenu: [
@@ -71,7 +74,45 @@ include 'navigation.php';
                     ]
                 });
             });
+
+            // Selectize
+            $(".select").selectize();
+
+            // Function menampilkan nama pelanggan secara otomatis
+            function getPelanggan() {
+                let id_pelanggan = $('#pelanggan').val();
+                $.ajax({
+                    type: "GET",
+                    url: "modules/penjualan/get_pelanggan.php", // Proses get data pelanggan berdasarkan id_pelanggan
+                    data: {
+                        id_pelanggan: id_pelanggan
+                    },
+                    dataType: "JSON",
+                    success: function(result) {
+                        // Ketika sukses tampilkan data
+                        $("#nama_pelanggan"). val(result.nama_pelanggan);
+                    }
+                });
+            }
+
+            function getPulsa() {
+                let id_pulsa = $('#no_hp').val();
+                $.ajax({
+                    type: "GET",
+                    url: "modules/penjualan/get_pulsa.php", // Proses get data pelanggan berdasarkan id_pelanggan
+                    data: {
+                        id_pulsa: id_pulsa
+                    },
+                    dataType: "JSON",
+                    success: function(result) {
+                        // Ketika sukses tampilkan data
+                        $("#harga"). val(result.harga);
+                    }
+                });
+            }
         </script>
+        <!-- Format Angka JS -->
+        <script src="asset/js/format-angka.js"></script>
 
     </main>
 
